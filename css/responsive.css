@@ -99,9 +99,7 @@
         min-width: calc(50% - 15px);
     }
     
-    .timings-wrapper {
-        grid-template-columns: repeat(2, 1fr);
-    }
+
 }
 
 /* Mobile devices (max-width: 768px) */
@@ -207,13 +205,7 @@
         justify-content: center;
     }
     
-    .timings-wrapper {
-        grid-template-columns: 1fr;
-    }
-    
-    .testimonial-card {
-        min-width: 100%;
-    }
+
     
     .about-img-main img {
         height: 300px;

@@ -4,9 +4,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const donationForm = document.getElementById('donationForm');
     const amountInput = document.getElementById('amount');
     const categorySelect = document.getElementById('category');
-    const summaryCategory = document.getElementById('summaryCategory');
-    const summaryAmount = document.getElementById('summaryAmount');
-    const summaryTotal = document.getElementById('summaryTotal');
     const upiModal = document.getElementById('upiModal');
     const thankYouModal = document.getElementById('thankYouModal');
     
@@ -18,12 +15,10 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.addEventListener('click', function() {
             document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
-            
             const amount = this.getAttribute('data-amount');
             if (amount) {
                 amountInput.value = amount;
                 selectedAmount = parseInt(amount);
-                updateSummary();
             }
         });
     });
@@ -32,11 +27,10 @@ document.addEventListener('DOMContentLoaded', function() {
     amountInput.addEventListener('input', function() {
         document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
         selectedAmount = parseInt(this.value) || 0;
-        updateSummary();
     });
     
     // Category change
-    categorySelect.addEventListener('change', updateSummary);
+    categorySelect.addEventListener('change', function() {});
     
     // Payment method selection
     document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
@@ -44,14 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
             selectedPaymentMethod = this.value;
         });
     });
-    
-    // Update summary
-    function updateSummary() {
-        const category = categorySelect.value || '-';
-        summaryCategory.textContent = category;
-        summaryAmount.textContent = AppUtils.formatCurrency(selectedAmount);
-        summaryTotal.textContent = AppUtils.formatCurrency(selectedAmount);
-    }
     
     // Form submission
     donationForm.addEventListener('submit', async function(e) {

@@ -1,5 +1,9 @@
 // ========== Common JavaScript Functions ==========
 
+// ===== API Configuration =====
+// Change this URL to your Render backend URL after deploying
+const API_BASE_URL = 'https://templetrust-backend.onrender.com';
+
 // Mobile menu toggle
 document.addEventListener('DOMContentLoaded', function() {
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -104,7 +108,7 @@ document.querySelectorAll('.stat-card, .feature-item, .event-card').forEach(elem
 const API = {
     async get(url) {
         try {
-            const response = await fetch(url);
+            const response = await fetch(API_BASE_URL + url);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -117,7 +121,7 @@ const API = {
     
     async post(url, data) {
         try {
-            const response = await fetch(url, {
+            const response = await fetch(API_BASE_URL + url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

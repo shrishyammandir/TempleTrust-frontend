@@ -93,6 +93,7 @@
     </div>
 
     <script>
+        const API_BASE_URL = 'https://templetrust-backend.onrender.com';
         // Check auth
         const token = localStorage.getItem('adminToken');
         if (!token) {
@@ -102,7 +103,7 @@
         // Load dashboard data
         async function loadDashboard() {
             try {
-                const response = await fetch('/api/admin/dashboard/stats', {
+                const response = await fetch(API_BASE_URL + '/api/admin/dashboard/stats', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 

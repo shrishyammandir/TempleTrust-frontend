@@ -301,7 +301,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('downloadReceiptBtn')?.addEventListener('click', async function() {
         const receiptNumber = document.getElementById('receiptNumber').textContent;
         try {
-            window.open(`/api/donations/receipt/${receiptNumber}`, '_blank');
+            window.open(`${API_BASE_URL}/api/donations/receipt/${receiptNumber}`, '_blank');
         } catch (error) {
             AppUtils.showToast('Error downloading receipt', 'error');
         }

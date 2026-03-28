@@ -504,3 +504,125 @@
     font-weight: 600;
     text-align: center;
 }
+
+/* ========== Responsive: Tablet ========== */
+@media (max-width: 992px) {
+    .donation-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .donation-sidebar {
+        order: -1;
+    }
+}
+
+/* ========== Responsive: Mobile ========== */
+@media (max-width: 768px) {
+    .donation-form {
+        padding: 20px 15px;
+    }
+
+    .form-header {
+        padding: 20px 15px;
+    }
+
+    .form-header h2 {
+        font-size: 1.3rem;
+    }
+
+    .form-section h3 {
+        font-size: 1.1rem;
+    }
+
+    .preset-amounts {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .amount-btn {
+        padding: 12px 8px;
+        font-size: 1rem;
+    }
+
+    .payment-card {
+        padding: 15px;
+        gap: 10px;
+    }
+
+    .payment-icon {
+        font-size: 1.5rem;
+    }
+
+    .payment-content h4 {
+        font-size: 1rem;
+    }
+
+    .sidebar-card {
+        padding: 20px 15px;
+    }
+
+    .upi-id-container {
+        flex-direction: column;
+    }
+
+    .thank-you-actions {
+        flex-direction: column;
+    }
+
+    .thank-you-actions .btn {
+        width: 100%;
+    }
+
+    .detail-row {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .quick-donate-card {
+        padding: 25px 15px;
+    }
+
+    .quick-donate-card h3 {
+        font-size: 1.4rem;
+    }
+}
+
+/* ========== Responsive: Small Mobile ========== */
+@media (max-width: 480px) {
+    .donation-form {
+        padding: 15px 10px;
+    }
+
+    .form-header {
+        padding: 15px 10px;
+    }
+
+    .preset-amounts {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .amount-btn {
+        padding: 10px 5px;
+        font-size: 0.95rem;
+    }
+
+    .payment-card {
+        padding: 12px;
+        flex-wrap: wrap;
+    }
+
+    .sidebar-card {
+        padding: 15px;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 10px;
+    }
+
+    .modal-header,
+    .modal-body {
+        padding: 15px;
+    }
+}

@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const formData = {
                 name: document.getElementById('name').value.trim(),
                 email: document.getElementById('email').value.trim(),
-                phone: document.getElementById('phone').value.trim(),
                 subject: document.getElementById('subject').value.trim(),
                 message: document.getElementById('message').value.trim()
             };
@@ -45,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function() {
 function validateContactForm() {
     const name = document.getElementById('name').value.trim();
     const email = document.getElementById('email').value.trim();
-    const phone = document.getElementById('phone').value.trim();
     const message = document.getElementById('message').value.trim();
     
     if (!name) {
@@ -55,11 +53,6 @@ function validateContactForm() {
     
     if (!email || !AppUtils.validateEmail(email)) {
         AppUtils.showToast('Please enter a valid email address', 'error');
-        return false;
-    }
-    
-    if (!phone) {
-        AppUtils.showToast('Please enter your phone number', 'error');
         return false;
     }
     

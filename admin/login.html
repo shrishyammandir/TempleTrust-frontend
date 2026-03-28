@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <base href="/TempleTrust-frontend/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - Shri Shyam Mandir</title>
@@ -135,7 +136,7 @@
                 if (data.success) {
                     localStorage.setItem('adminToken', data.token);
                     localStorage.setItem('adminUser', JSON.stringify(data.admin));
-                    window.location.href = '/admin/dashboard';
+                    window.location.href = '/admin/dashboard.html';
                 } else {
                     errorMessage.textContent = data.message || 'Invalid credentials';
                     errorMessage.style.display = 'block';

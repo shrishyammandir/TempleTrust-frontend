@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <base href="/TempleTrust-frontend/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Shri Shyam Mandir</title>
@@ -97,7 +98,7 @@
         // Check auth
         const token = localStorage.getItem('adminToken');
         if (!token) {
-            window.location.href = '/admin';
+            window.location.href = '/admin/login.html';
         }
 
         // Load dashboard data

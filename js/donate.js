@@ -346,7 +346,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Quick donate button
         quickDonateBtn.addEventListener('click', function() {
             if (selectedQuickAmount > 0) {
-                window.location.href = `/donate?amount=${selectedQuickAmount}`;
+                window.location.href = `/donate.html?amount=${selectedQuickAmount}`;
             } else {
                 AppUtils.showToast('Please select or enter an amount', 'error');
             }

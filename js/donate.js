@@ -75,10 +75,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function validateForm() {
         const fullName = document.getElementById('fullName').value.trim();
         const email = document.getElementById('email').value.trim();
-        const phone = document.getElementById('phone').value.trim();
         const category = categorySelect.value;
         const amount = parseInt(amountInput.value);
-        const pan = document.getElementById('pan').value.trim();
         
         if (!fullName) {
             AppUtils.showToast('Please enter your full name', 'error');
@@ -87,11 +85,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (!email || !AppUtils.validateEmail(email)) {
             AppUtils.showToast('Please enter a valid email address', 'error');
-            return false;
-        }
-        
-        if (!phone || !AppUtils.validatePhone(phone)) {
-            AppUtils.showToast('Please enter a valid 10-digit phone number', 'error');
             return false;
         }
         
@@ -105,11 +98,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         }
         
-        if (pan && !AppUtils.validatePAN(pan.toUpperCase())) {
-            AppUtils.showToast('Please enter a valid PAN number (e.g., ABCDE1234F)', 'error');
-            return false;
-        }
-        
         return true;
     }
     
@@ -118,8 +106,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return {
             fullName: document.getElementById('fullName').value.trim(),
             email: document.getElementById('email').value.trim(),
-            phone: document.getElementById('phone').value.trim(),
-            pan: document.getElementById('pan').value.trim().toUpperCase(),
             address: document.getElementById('address').value.trim(),
             category: categorySelect.value,
             amount: parseInt(amountInput.value),
@@ -148,8 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 order_id: orderResponse.orderId,
                 prefill: {
                     name: formData.fullName,
-                    email: formData.email,
-                    contact: formData.phone
+                    email: formData.email
                 },
                 theme: {
                     color: '#FF6600'
@@ -285,7 +270,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Show thank you modal
     function showThankYou(donation) {
-        document.getElementById('receiptNumber').textContent = donation.receiptNumber || '-';
         document.getElementById('txAmount').textContent = AppUtils.formatCurrency(donation.amount);
         document.getElementById('txDate').textContent = AppUtils.formatDate(donation.createdAt);
         document.getElementById('paymentId').textContent = donation.razorpayPaymentId || '-';
@@ -296,16 +280,6 @@ document.addEventListener('DOMContentLoaded', function() {
         donationForm.reset();
         updateSummary();
     }
-    
-    // Download receipt
-    document.getElementById('downloadReceiptBtn')?.addEventListener('click', async function() {
-        const receiptNumber = document.getElementById('receiptNumber').textContent;
-        try {
-            window.open(`${API_BASE_URL}/api/donations/receipt/${receiptNumber}`, '_blank');
-        } catch (error) {
-            AppUtils.showToast('Error downloading receipt', 'error');
-        }
-    });
 });
 
 // Quick donate widget on homepage

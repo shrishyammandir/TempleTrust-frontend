@@ -80,30 +80,14 @@
                                 <input type="text" id="fullName" name="fullName" required>
                             </div>
 
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="email">Email Address <span class="required">*</span></label>
-                                    <input type="email" id="email" name="email" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="phone">Phone Number <span class="required">*</span></label>
-                                    <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required>
-                                </div>
+                            <div class="form-group">
+                                <label for="email">Email Address <span class="required">*</span></label>
+                                <input type="email" id="email" name="email" required>
                             </div>
 
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="pan">PAN Number <span class="optional">(For 80G Receipt)</span></label>
-                                    <input type="text" id="pan" name="pan" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" 
-                                           placeholder="ABCDE1234F" maxlength="10" style="text-transform: uppercase;">
-                                    <small>Required for tax exemption certificate</small>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="address">Address <span class="optional">(Optional)</span></label>
-                                    <input type="text" id="address" name="address">
-                                </div>
+                            <div class="form-group">
+                                <label for="address">Address <span class="optional">(Optional)</span></label>
+                                <input type="text" id="address" name="address">
                             </div>
                         </div>
 
@@ -195,8 +179,7 @@
                         </button>
 
                         <p class="form-note">
-                            <i class="fas fa-lock"></i> Your donation is secure and encrypted. 
-                            You will receive a tax-exemption receipt via email.
+                            <i class="fas fa-lock"></i> Your donation is secure and encrypted.
                         </p>
                     </form>
                 </div>
@@ -238,13 +221,7 @@
                                     <span>SSL encrypted</span>
                                 </div>
                             </li>
-                            <li>
-                                <i class="fas fa-file-invoice"></i>
-                                <div>
-                                    <strong>Instant Receipt</strong>
-                                    <span>Via email</span>
-                                </div>
-                            </li>
+
                         </ul>
                     </div>
 
@@ -342,10 +319,6 @@
                     <div class="transaction-details">
                         <h3>Transaction Details</h3>
                         <div class="detail-row">
-                            <span>Receipt No:</span>
-                            <strong id="receiptNumber">-</strong>
-                        </div>
-                        <div class="detail-row">
                             <span>Amount:</span>
                             <strong id="txAmount">₹0</strong>
                         </div>
@@ -359,20 +332,12 @@
                         </div>
                     </div>
 
-                    <div class="receipt-info">
-                        <i class="fas fa-file-alt"></i>
-                        <p>You can download your donation receipt below. 
-                           You can use this for 80G tax exemption.</p>
-                    </div>
-
                     <div class="thank-you-actions">
-                        <button class="btn btn-primary" id="downloadReceiptBtn">
-                            <i class="fas fa-download"></i> Download Receipt
-                        </button>
-                        <a href="index.html" class="btn btn-outline">
+                        <a href="index.html" class="btn btn-primary">
                             <i class="fas fa-home"></i> Back to Home
                         </a>
                     </div>
+
                 </div>
             </div>
         </div>

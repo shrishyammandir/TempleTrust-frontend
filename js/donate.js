@@ -319,7 +319,5 @@ document.addEventListener('DOMContentLoaded', function() {
     if (prefilAmount && document.getElementById('amount')) {
         document.getElementById('amount').value = prefilAmount;
         selectedAmount = parseInt(prefilAmount);
-        document.getElementById('summaryAmount').textContent = AppUtils.formatCurrency(selectedAmount);
-        document.getElementById('summaryTotal').textContent = AppUtils.formatCurrency(selectedAmount);
     }
 });

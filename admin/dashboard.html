@@ -30,6 +30,18 @@
         .badge-success { background: #28a745; color: white; }
         .badge-pending { background: #ffc107; color: #000; }
         .logout-btn { background: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        .section-hidden { display: none; }
+        .password-form { max-width: 450px; }
+        .password-form .form-group { margin-bottom: 18px; }
+        .password-form label { display: block; margin-bottom: 6px; font-weight: 500; color: #2c3e50; }
+        .password-form input { width: 100%; padding: 10px 14px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; }
+        .password-form input:focus { outline: none; border-color: #FF6600; box-shadow: 0 0 0 3px rgba(255,102,0,0.1); }
+        .password-form .btn-save { background: #FF6600; color: white; padding: 12px 24px; border: none; border-radius: 5px; font-size: 1rem; font-weight: 600; cursor: pointer; }
+        .password-form .btn-save:hover { background: #e55a00; }
+        .alert { padding: 12px 16px; border-radius: 5px; margin-bottom: 16px; display: none; }
+        .alert-success { background: #d4edda; color: #155724; }
+        .alert-error { background: #f8d7da; color: #721c24; }
+        .sidebar-menu a.active { background: rgba(255,255,255,0.15); }
     </style>
 </head>
 <body>
@@ -37,12 +49,12 @@
         <aside class="sidebar">
             <h2><i class="fas fa-om"></i> Shri Shyam Mandir</h2>
             <ul class="sidebar-menu">
-                <li><a href="#" class="active"><i class="fas fa-dashboard"></i> Dashboard</a></li>
+                <li><a href="#" onclick="showSection('dashboard')" id="nav-dashboard" class="active"><i class="fas fa-dashboard"></i> Dashboard</a></li>
                 <li><a href="#"><i class="fas fa-donate"></i> Donations</a></li>
                 <li><a href="#"><i class="fas fa-users"></i> Donors</a></li>
                 <li><a href="#"><i class="fas fa-envelope"></i> Contacts</a></li>
                 <li><a href="#"><i class="fas fa-calendar"></i> Events</a></li>
-                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a href="#" onclick="showSection('settings')" id="nav-settings"><i class="fas fa-key"></i> Change Password</a></li>
             </ul>
             <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
         </aside>
@@ -51,6 +63,7 @@
             <h1>Dashboard</h1>
             <p>Welcome, <span id="adminName">Admin</span></p>
 
+            <div id="dashboardSection">
             <div class="stats-grid">
                 <div class="stat-box">
                     <h3>Today's Donations</h3>
@@ -90,6 +103,31 @@
                     <tbody></tbody>
                 </table>
             </div>
+            </div>
+
+            <!-- Change Password Section -->
+            <div id="settingsSection" class="section-hidden">
+                <h2>Change Password</h2>
+                <div class="card">
+                    <div class="alert alert-success" id="pwdSuccess"></div>
+                    <div class="alert alert-error" id="pwdError"></div>
+                    <form class="password-form" id="changePasswordForm">
+                        <div class="form-group">
+                            <label for="currentPassword">Current Password</label>
+                            <input type="password" id="currentPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword" required minlength="6">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm New Password</label>
+                            <input type="password" id="confirmPassword" required minlength="6">
+                        </div>
+                        <button type="submit" class="btn-save"><i class="fas fa-save"></i> Update Password</button>
+                    </form>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -98,7 +136,7 @@
         // Check auth
         const token = localStorage.getItem('adminToken');
         if (!token) {
-            window.location.href = '/TempleTrust-frontend/admin/login.html';
+            window.location.href = '/admin/login.html';
         }
 
         // Load dashboard data
@@ -145,8 +183,67 @@
         function logout() {
             localStorage.removeItem('adminToken');
             localStorage.removeItem('adminUser');
-            window.location.href = '/TempleTrust-frontend/admin/login.html';
+            window.location.href = '/admin/login.html';
         }
+
+        // Section navigation
+        function showSection(section) {
+            document.getElementById('dashboardSection').style.display = section === 'dashboard' ? '' : 'none';
+            document.getElementById('settingsSection').style.display = section === 'settings' ? '' : 'none';
+            document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+            const navId = section === 'settings' ? 'nav-settings' : 'nav-dashboard';
+            document.getElementById(navId)?.classList.add('active');
+        }
+
+        // Change password form
+        document.getElementById('changePasswordForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const successEl = document.getElementById('pwdSuccess');
+            const errorEl = document.getElementById('pwdError');
+            successEl.style.display = 'none';
+            errorEl.style.display = 'none';
+
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword.length < 6) {
+                errorEl.textContent = 'New password must be at least 6 characters.';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                errorEl.textContent = 'New password and confirm password do not match.';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch(API_BASE_URL + '/api/admin/change-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ currentPassword, newPassword })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    successEl.textContent = 'Password changed successfully!';
+                    successEl.style.display = 'block';
+                    this.reset();
+                } else {
+                    errorEl.textContent = data.message || 'Failed to change password.';
+                    errorEl.style.display = 'block';
+                }
+            } catch (error) {
+                errorEl.textContent = 'An error occurred. Please try again.';
+                errorEl.style.display = 'block';
+            }
+        });
 
         // Load admin info
         const adminUser = JSON.parse(localStorage.getItem('adminUser') || '{}');

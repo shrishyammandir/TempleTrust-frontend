@@ -136,7 +136,7 @@
                 if (data.success) {
                     localStorage.setItem('adminToken', data.token);
                     localStorage.setItem('adminUser', JSON.stringify(data.admin));
-                    window.location.href = '/TempleTrust-frontend/admin/dashboard.html';
+                    window.location.href = '/admin/dashboard.html';
                 } else {
                     errorMessage.textContent = data.message || 'Invalid credentials';
                     errorMessage.style.display = 'block';

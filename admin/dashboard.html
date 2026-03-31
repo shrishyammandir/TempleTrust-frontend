@@ -85,23 +85,6 @@
                     <small id="totalCount">0 donations</small>
                 </div>
             </div>
-
-            <div class="card">
-                <h2>Recent Donations</h2>
-                <table class="table" id="recentDonations">
-                    <thead>
-                        <tr>
-                            <th>Receipt No</th>
-                            <th>Donor Name</th>
-                            <th>Email</th>
-                            <th>Amount</th>
-                            <th>Category</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
             </div>
 
             <!-- Change Password Section -->
@@ -160,19 +143,6 @@
                     
                     document.getElementById('totalAmount').textContent = `₹${data.stats.total.amount.toLocaleString('en-IN')}`;
                     document.getElementById('totalCount').textContent = `${data.stats.total.count} donations`;
-                    
-                    // Update recent donations
-                    const tbody = document.querySelector('#recentDonations tbody');
-                    tbody.innerHTML = data.recentDonations.map(d => `
-                        <tr>
-                            <td>${d.receiptNumber}</td>
-                            <td>${d.fullName}</td>
-                            <td>${d.email}</td>
-                            <td>₹${d.amount.toLocaleString('en-IN')}</td>
-                            <td>${d.category}</td>
-                            <td>${new Date(d.createdAt).toLocaleDateString('en-IN')}</td>
-                        </tr>
-                    `).join('');
                 }
             } catch (error) {
                 console.error('Error loading dashboard:', error);

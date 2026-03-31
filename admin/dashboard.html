@@ -59,7 +59,7 @@
         </aside>
 
         <main class="main-content">
-            <h1>Dashboard</h1>
+            <h1 id="pageTitle">Dashboard</h1>
             <p>Welcome, <span id="adminName">Admin</span></p>
 
             <div id="dashboardSection">
@@ -105,7 +105,7 @@
             </div>
 
             <!-- Change Password Section -->
-            <div id="settingsSection" class="section-hidden">
+            <div id="settingsSection" style="display:none;">
                 <h2>Change Password</h2>
                 <div class="card">
                     <div class="alert alert-success" id="pwdSuccess"></div>
@@ -187,8 +187,9 @@
 
         // Section navigation
         function showSection(section) {
-            document.getElementById('dashboardSection').style.display = section === 'dashboard' ? '' : 'none';
-            document.getElementById('settingsSection').style.display = section === 'settings' ? '' : 'none';
+            document.getElementById('dashboardSection').style.display = section === 'dashboard' ? 'block' : 'none';
+            document.getElementById('settingsSection').style.display = section === 'settings' ? 'block' : 'none';
+            document.getElementById('pageTitle').textContent = section === 'settings' ? 'Change Password' : 'Dashboard';
             document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
             const navId = section === 'settings' ? 'nav-settings' : 'nav-dashboard';
             document.getElementById(navId)?.classList.add('active');

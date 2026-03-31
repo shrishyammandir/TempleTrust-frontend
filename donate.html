@@ -91,49 +91,6 @@
                             </div>
                         </div>
 
-                        <!-- Donation Details -->
-                        <div class="form-section">
-                            <h3><i class="fas fa-donate"></i> Donation Details</h3>
-                            
-                            <div class="form-group">
-                                <label for="category">Donation Category <span class="required">*</span></label>
-                                <select id="category" name="category" required>
-                                    <option value="">Select Category</option>
-                                    <option value="General Donation">General Donation</option>
-                                    <option value="Annadanam">Annadanam (Food Offering)</option>
-                                    <option value="Temple Construction">Temple Construction/Renovation</option>
-                                    <option value="Festival Sponsorship">Festival Sponsorship</option>
-                                    <option value="Gaushala">Gaushala (Cow Shelter)</option>
-                                    <option value="Education Fund">Education Fund</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Donation Amount <span class="required">*</span></label>
-                                <div class="amount-selection">
-                                    <div class="preset-amounts">
-                                        <button type="button" class="amount-btn" data-amount="101">₹101</button>
-                                        <button type="button" class="amount-btn" data-amount="251">₹251</button>
-                                        <button type="button" class="amount-btn" data-amount="501">₹501</button>
-                                        <button type="button" class="amount-btn" data-amount="1001">₹1001</button>
-                                        <button type="button" class="amount-btn" data-amount="5001">₹5001</button>
-                                        <button type="button" class="amount-btn" data-amount="11000">₹11,000</button>
-                                    </div>
-                                    <div class="custom-amount">
-                                        <input type="number" id="amount" name="amount" placeholder="Enter custom amount" 
-                                               min="1" required>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="dedication">Dedication/Message <span class="optional">(Optional)</span></label>
-                                <textarea id="dedication" name="dedication" rows="3" 
-                                          placeholder="In memory of... / Special wishes..."></textarea>
-                            </div>
-                        </div>
-
                         <!-- Payment Method Selection -->
                         <div class="form-section">
                             <h3><i class="fas fa-credit-card"></i> Payment Method</h3>
@@ -146,24 +103,8 @@
                                             <i class="fas fa-credit-card"></i>
                                         </div>
                                         <div class="payment-content">
-                                            <h4>Razorpay</h4>
+                                            <h4>Online Payment</h4>
                                             <p>Cards, UPI, Net Banking, Wallets</p>
-                                        </div>
-                                        <div class="payment-check">
-                                            <i class="fas fa-check-circle"></i>
-                                        </div>
-                                    </div>
-                                </label>
-
-                                <label class="payment-option">
-                                    <input type="radio" name="paymentMethod" value="upi">
-                                    <div class="payment-card">
-                                        <div class="payment-icon">
-                                            <i class="fas fa-qrcode"></i>
-                                        </div>
-                                        <div class="payment-content">
-                                            <h4>UPI Direct</h4>
-                                            <p>Scan QR or use UPI ID</p>
                                         </div>
                                         <div class="payment-check">
                                             <i class="fas fa-check-circle"></i>
@@ -207,117 +148,17 @@
                         <p>If you face any issues with donation, please contact us:</p>
                         <div class="help-contact">
                             <i class="fas fa-phone"></i>
-                            <span>+91-9876543210</span>
+                            <span>+91-9991688966</span>
+                        </div>
+                        <div class="help-contact">
+                            <i class="fas fa-envelope"></i>
+                            <span>shrishyammandirsewasamitigilou@gmail.com</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- UPI Modal -->
-    <div class="modal" id="upiModal">
-        <div class="modal-overlay" id="modalOverlay"></div>
-        <div class="modal-content">
-            <button class="modal-close" id="modalClose">
-                <i class="fas fa-times"></i>
-            </button>
-            
-            <div class="modal-header">
-                <h2><i class="fas fa-qrcode"></i> Pay via UPI</h2>
-                <p>Scan QR code or use UPI ID to complete payment</p>
-            </div>
-
-            <div class="modal-body">
-                <div class="upi-section">
-                    <h3>Scan QR Code</h3>
-                    <div class="qr-code-container">
-                        <canvas id="qrCode"></canvas>
-                    </div>
-                    <p class="upi-amount">Amount: <strong id="upiAmount">₹0</strong></p>
-                </div>
-
-                <div class="divider">OR</div>
-
-                <div class="upi-section">
-                    <h3>Use UPI ID</h3>
-                    <div class="upi-id-container">
-                        <input type="text" id="upiIdDisplay" readonly value="shrishyammandir@ybl">
-                        <button class="btn btn-secondary" id="copyUpiBtn">
-                            <i class="fas fa-copy"></i> Copy
-                        </button>
-                    </div>
-                </div>
-
-                <div class="upi-apps">
-                    <h3>Quick Pay with Apps</h3>
-                    <div class="upi-app-buttons">
-                        <button class="upi-app-btn" id="gpayBtn">
-                            <i class="fab fa-google-pay"></i> Google Pay
-                        </button>
-                        <button class="upi-app-btn" id="phonepeBtn">
-                            <i class="fas fa-mobile-alt"></i> PhonePe
-                        </button>
-                        <button class="upi-app-btn" id="paytmBtn">
-                            <i class="fas fa-wallet"></i> Paytm
-                        </button>
-                    </div>
-                </div>
-
-                <div class="upi-note">
-                    <i class="fas fa-info-circle"></i>
-                    <p>After successful payment, please send a screenshot of the transaction to 
-                       <strong>+91-9876543210</strong> for verification and receipt generation.</p>
-                </div>
-
-                <button class="btn btn-primary btn-block" id="upiDoneBtn">
-                    I have completed the payment
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Thank You Modal -->
-    <div class="modal" id="thankYouModal">
-        <div class="modal-overlay"></div>
-        <div class="modal-content">
-            <div class="modal-header success">
-                <div class="success-icon">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <h2>Thank You for Your Donation!</h2>
-            </div>
-
-            <div class="modal-body">
-                <div class="thank-you-content">
-                    <p>Your generous contribution has been received successfully.</p>
-                    
-                    <div class="transaction-details">
-                        <h3>Transaction Details</h3>
-                        <div class="detail-row">
-                            <span>Amount:</span>
-                            <strong id="txAmount">₹0</strong>
-                        </div>
-                        <div class="detail-row">
-                            <span>Date:</span>
-                            <strong id="txDate">-</strong>
-                        </div>
-                        <div class="detail-row">
-                            <span>Payment ID:</span>
-                            <strong id="paymentId">-</strong>
-                        </div>
-                    </div>
-
-                    <div class="thank-you-actions">
-                        <a href="index.html" class="btn btn-primary">
-                            <i class="fas fa-home"></i> Back to Home
-                        </a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Footer -->
     <footer class="footer">
@@ -353,7 +194,7 @@
                     <ul class="footer-contact">
                         <li>
                             <i class="fas fa-phone"></i>
-                            <span>+91-9876543210</span>
+                            <span>+91-9991688966</span>
                         </li>
                     </ul>
                 </div>

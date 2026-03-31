@@ -2,35 +2,8 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     const donationForm = document.getElementById('donationForm');
-    const amountInput = document.getElementById('amount');
-    const categorySelect = document.getElementById('category');
-    const upiModal = document.getElementById('upiModal');
-    const thankYouModal = document.getElementById('thankYouModal');
     
-    let selectedAmount = 0;
     let selectedPaymentMethod = 'razorpay';
-    
-    // Amount button selection
-    document.querySelectorAll('.amount-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            const amount = this.getAttribute('data-amount');
-            if (amount) {
-                amountInput.value = amount;
-                selectedAmount = parseInt(amount);
-            }
-        });
-    });
-    
-    // Amount input change
-    amountInput.addEventListener('input', function() {
-        document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
-        selectedAmount = parseInt(this.value) || 0;
-    });
-    
-    // Category change
-    categorySelect.addEventListener('change', function() {});
     
     // Payment method selection
     document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
@@ -48,21 +21,15 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        const formData = getFormData();
-        
-        if (selectedPaymentMethod === 'razorpay') {
-            await processRazorpayPayment(formData);
-        } else {
-            showUPIModal(formData);
-        }
+        // Open payment page
+        window.open('https://razorpay.me/@shrishyammandirsewasamiti', '_blank');
+        AppUtils.showToast('Redirecting to payment page...', 'success');
     });
     
     // Validate form
     function validateForm() {
         const fullName = document.getElementById('fullName').value.trim();
         const email = document.getElementById('email').value.trim();
-        const category = categorySelect.value;
-        const amount = parseInt(amountInput.value);
         
         if (!fullName) {
             AppUtils.showToast('Please enter your full name', 'error');
@@ -74,197 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return false;
         }
         
-        if (!category) {
-            AppUtils.showToast('Please select a donation category', 'error');
-            return false;
-        }
-        
-        if (!amount || amount < 1) {
-            AppUtils.showToast('Please enter a valid donation amount', 'error');
-            return false;
-        }
-        
         return true;
-    }
-    
-    // Get form data
-    function getFormData() {
-        return {
-            fullName: document.getElementById('fullName').value.trim(),
-            email: document.getElementById('email').value.trim(),
-            address: document.getElementById('address').value.trim(),
-            category: categorySelect.value,
-            amount: parseInt(amountInput.value),
-            dedication: document.getElementById('dedication').value.trim(),
-            paymentMethod: selectedPaymentMethod
-        };
-    }
-    
-    // Process Razorpay payment
-    async function processRazorpayPayment(formData) {
-        try {
-            AppUtils.showLoading();
-            
-            // Create order
-            const orderResponse = await AppUtils.API.post('/api/donations/create-order', formData);
-            
-            AppUtils.hideLoading();
-            
-            // Razorpay options
-            const options = {
-                key: orderResponse.razorpayKeyId,
-                amount: orderResponse.amount,
-                currency: 'INR',
-                name: 'Shri Shyam Mandir',
-                description: formData.category,
-                order_id: orderResponse.orderId,
-                prefill: {
-                    name: formData.fullName,
-                    email: formData.email
-                },
-                theme: {
-                    color: '#FF6600'
-                },
-                handler: async function(response) {
-                    await verifyPayment(response, orderResponse.donationId);
-                },
-                modal: {
-                    ondismiss: function() {
-                        AppUtils.showToast('Payment cancelled', 'error');
-                    }
-                }
-            };
-            
-            const rzp = new Razorpay(options);
-            rzp.open();
-            
-        } catch (error) {
-            AppUtils.hideLoading();
-            AppUtils.showToast(error.message || 'Failed to initiate payment', 'error');
-        }
-    }
-    
-    // Verify Razorpay payment
-    async function verifyPayment(paymentResponse, donationId) {
-        try {
-            AppUtils.showLoading();
-            
-            const verifyResponse = await AppUtils.API.post('/api/donations/verify-payment', {
-                razorpayOrderId: paymentResponse.razorpay_order_id,
-                razorpayPaymentId: paymentResponse.razorpay_payment_id,
-                razorpaySignature: paymentResponse.razorpay_signature,
-                donationId: donationId
-            });
-            
-            AppUtils.hideLoading();
-            
-            if (verifyResponse.success) {
-                showThankYou(verifyResponse.donation);
-            } else {
-                AppUtils.showToast('Payment verification failed', 'error');
-            }
-            
-        } catch (error) {
-            AppUtils.hideLoading();
-            AppUtils.showToast(error.message || 'Payment verification failed', 'error');
-        }
-    }
-    
-    // Show UPI modal
-    function showUPIModal(formData) {
-        const upiId = 'shrishyammandir@ybl'; // Will be fetched from env
-        const amount = formData.amount;
-        const trustName = 'Shri Shyam Mandir';
-        
-        // Generate UPI string
-        const upiString = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(trustName)}&am=${amount}&cu=INR`;
-        
-        // Generate QR code
-        const qrCanvas = document.getElementById('qrCode');
-        QRCode.toCanvas(qrCanvas, upiString, {
-            width: 250,
-            margin: 2,
-            color: {
-                dark: '#000000',
-                light: '#ffffff'
-            }
-        });
-        
-        // Update amount display
-        document.getElementById('upiAmount').textContent = AppUtils.formatCurrency(amount);
-        document.getElementById('upiIdDisplay').value = upiId;
-        
-        // Show modal
-        upiModal.classList.add('show');
-        
-        // Save pending donation
-        savePendingDonation(formData);
-    }
-    
-    // Save pending UPI donation
-    async function savePendingDonation(formData) {
-        try {
-            await AppUtils.API.post('/api/donations/upi-pending', formData);
-        } catch (error) {
-            console.error('Error saving pending donation:', error);
-        }
-    }
-    
-    // UPI modal controls
-    document.getElementById('modalClose')?.addEventListener('click', () => {
-        upiModal.classList.remove('show');
-    });
-    
-    document.getElementById('modalOverlay')?.addEventListener('click', () => {
-        upiModal.classList.remove('show');
-    });
-    
-    // Copy UPI ID
-    document.getElementById('copyUpiBtn')?.addEventListener('click', function() {
-        const upiIdInput = document.getElementById('upiIdDisplay');
-        upiIdInput.select();
-        document.execCommand('copy');
-        AppUtils.showToast('UPI ID copied to clipboard', 'success');
-    });
-    
-    // UPI app deep links
-    const upiId = 'shrishyammandir@ybl';
-    const amount = selectedAmount;
-    const trustName = 'Shri Shyam Mandir';
-    
-    document.getElementById('gpayBtn')?.addEventListener('click', () => {
-        const gpayUrl = `tez://upi/pay?pa=${upiId}&pn=${encodeURIComponent(trustName)}&am=${amount}&cu=INR`;
-        window.location.href = gpayUrl;
-    });
-    
-    document.getElementById('phonepeBtn')?.addEventListener('click', () => {
-        const phonepeUrl = `phonepe://pay?pa=${upiId}&pn=${encodeURIComponent(trustName)}&am=${amount}&cu=INR`;
-        window.location.href = phonepeUrl;
-    });
-    
-    document.getElementById('paytmBtn')?.addEventListener('click', () => {
-        const paytmUrl = `paytmmp://pay?pa=${upiId}&pn=${encodeURIComponent(trustName)}&am=${amount}&cu=INR`;
-        window.location.href = paytmUrl;
-    });
-    
-    document.getElementById('upiDoneBtn')?.addEventListener('click', () => {
-        upiModal.classList.remove('show');
-        AppUtils.showToast('Thank you! We will verify your payment and send you a receipt shortly.', 'success');
-        donationForm.reset();
-        updateSummary();
-    });
-    
-    // Show thank you modal
-    function showThankYou(donation) {
-        document.getElementById('txAmount').textContent = AppUtils.formatCurrency(donation.amount);
-        document.getElementById('txDate').textContent = AppUtils.formatDate(donation.createdAt);
-        document.getElementById('paymentId').textContent = donation.razorpayPaymentId || '-';
-        
-        thankYouModal.classList.add('show');
-        
-        // Reset form
-        donationForm.reset();
-        updateSummary();
     }
 });
 
